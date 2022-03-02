@@ -1,0 +1,36 @@
+{
+    "controls":{
+        "phase" : "train",
+        "train_data_dir":"/home/jongwook95.lee/study/vision_machine/data/example/cat_dog_classify/train",
+        "remove_filename_list" : [],
+        "log_path":"./log.log",
+        "save_model_path" : "/home/jongwook95.lee/study/vision_machine/experiment/cat_dog_classify/best_model/"
+    },
+    "parameters":{
+        "epochs" : 100,
+        "batch_size" : 32,
+        "train_valid_split" : true,
+        "valid_ratio" : 0.2,
+        "split_seed" : 1004,
+        "vision_model_structure" : "vgg16",
+        "pretrained" : true,
+        "loss_name":"crossentropy",
+        "gpu_use" : true,
+        "optimizer_name" : "Adam",
+        "optimizer_learning_rate": 1e-4,
+        "optimizer_nesterov" : null,
+        "optimizer_weight_decay" : 1e-8,
+        "optimizer_alpha" : 0.9,
+        "optimizer_momentum" : 0.0,
+        "optimizer_epsilon" : 1e-07,
+        "optimizer_centered" : false,
+        "optimizer_beta_1" : 0.9,
+        "optimizer_beta_2" : 0.999,
+        "optimizer_amsgrad" : false,
+        "early_stopping_min_delta" : 0,
+        "lr_scheduler_name":"constant",
+        "model_pretrained" : "imagenet",
+        "class_mode" : "categorical"
+
+    }
+}
