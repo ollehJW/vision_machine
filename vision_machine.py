@@ -5,6 +5,7 @@ import time
 import math
 import glob
 import numpy as np
+import torch
 from data_gen.data_utils import prepare_data
 from data_gen.data_gen import dataset_generator
 from model.loss_factory import LossFactory
@@ -13,6 +14,7 @@ from model.optimizer_factory import OptimizerFactory
 from model.trainer_factory import SupervisedTraining
 from common_utils import logging_utils
 from common_utils.common_utils import parse_kwargs
+from inference.tester import Tester
 
 
 class Vision_Machine(object):
@@ -78,6 +80,48 @@ class Vision_Machine(object):
         # train
         trainer.train(vision_model, dataloader['train'], dataloader['valid'], loss_fn, optimizer, gpu=self.parameter_config['gpu_use'])
 
+
+    def inference(self):
+        """Vision Machine's inference function.
+        Parameters should be defined with config path (json type)
+        when class instantiated.
+            
+        Returns
+        -----------
+        float
+            best_value with decided eval metric, 
+        str
+            result_model_path
+        """
+
+        # find file list
+        file_list, uni_label, target_list = prepare_data(train_path = self.control_config['test_data_dir'],
+                                        remove_filename_list=self.control_config["remove_filename_list"])
+    
+
+        # make dataloader
+        test_image_dataset_generator = dataset_generator(file_list, target_list, batch_size=self.parameter_config['batch_size'], phase=self.control_config["phase"], train_valid_split=self.parameter_config['train_valid_split'], valid_ratio=self.parameter_config['valid_ratio'], stratify=target_list, random_seed=self.parameter_config['split_seed'])
+        test_data_gen = test_image_dataset_generator.dataloader()['test']
+
+        # Load trained model
+        if os.path.exists(self.control_config["load_model_path"]):
+            vision_model = ModelFactory(model_name=self.parameter_config["vision_model_structure"],
+                                        pretrained=False,
+                                        class_num=len(uni_label))
+            vision_model.load_state_dict(torch.load(self.control_config["load_model_path"]))
+            logging_utils.info(f"Loading a model is finished.")
+        else:
+            logging_utils.error("Please Provide Correct Model Path.")
+
+
+        # Inference
+        tester = Tester(model = vision_model, test_data_gen = test_data_gen)
+        prediction = tester.inference(gpu = True)
+        tester.make_csv_report(file_list, prediction, target_list, self.control_config['inference_result_path'])
+        tester.plot_confusion_matrix(target_list, prediction, self.control_config['inference_result_path'])
+
+
+
     def _load_config(self,config):
         """Load Json type configuration and put the parameters on Memory 
 
@@ -114,4 +158,7 @@ class Vision_Machine(object):
 
 if __name__ == "__main__":
     vision_machine = Vision_Machine("./vision_machine_parameters.params")
-    vision_machine.train()
+    if vision_machine.control_config['phase'] == 'train':
+        vision_machine.train()
+    else:
+        vision_machine.inference()
