@@ -1,13 +1,13 @@
 {
     "controls":{
         "phase" : "test",
-        "train_data_dir":"/home/jongwook95.lee/study/vision_machine/data/example/cat_dog_classify/train",
-        "test_data_dir": "/home/jongwook95.lee/study/vision_machine/data/example/cat_dog_classify/test",
+        "train_data_dir":"/home/jongwook95.lee/study/image_classification/vision_machine/data/example/cat_dog_classify/train",
+        "test_data_dir": "/home/jongwook95.lee/study/image_classification/vision_machine/data/example/cat_dog_classify/test",
         "remove_filename_list" : [],
         "log_path":"./log.log",
-        "save_model_path" : "/home/jongwook95.lee/study/vision_machine/experiment/cat_dog_classify/best_model/",
-        "load_model_path" : "/home/jongwook95.lee/study/vision_machine/experiment/cat_dog_classify/best_model/Best_model.pth",
-        "inference_result_path" : "/home/jongwook95.lee/study/vision_machine/experiment/cat_dog_classify/inference/"
+        "save_model_path" : "/home/jongwook95.lee/study/image_classification/vision_machine/experiment/cat_dog_classify/best_model/",
+        "load_model_path" : "/home/jongwook95.lee/study/image_classification/vision_machine/experiment/cat_dog_classify/best_model/Best_model.pth",
+        "inference_result_path" : "/home/jongwook95.lee/study/image_classification/vision_machine/experiment/cat_dog_classify/inference/"
     },
     "parameters":{
         "epochs" : 100,
@@ -15,7 +15,7 @@
         "train_valid_split" : true,
         "valid_ratio" : 0.2,
         "split_seed" : 1004,
-        "vision_model_structure" : "vgg16",
+        "vision_model_structure" : "vit",
         "pretrained" : true,
         "loss_name":"crossentropy",
         "gpu_use" : true,

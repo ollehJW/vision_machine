@@ -3,8 +3,9 @@ import torch.nn as nn
 import torch.optim as optim
 import torchvision
 import torchvision.models as models
+import timm
 
-AVAILABLE_MODEL = ['vgg16', 'resnet50', 'mobilenet_v2']
+AVAILABLE_MODEL = ['vgg16', 'resnet50', 'mobilenet_v2', 'vit']
 
 class ModelFactory(nn.Module):
 
@@ -52,6 +53,10 @@ class ModelFactory(nn.Module):
             # Change the output layer to output classes instead of 1000 classes
             num_ftrs = self.model.classifier[1].in_features
             self.model.classifier[1] = nn.Linear(num_ftrs, class_num)
+
+        # Vistion Transformer: optimal input shape (224 * 224)
+        elif model_name == 'vit':
+            self.model = timm.create_model('vit_base_patch16_224', pretrained=True, num_classes=class_num)
 
         ## efficientNet etc.. need updated torch + torchvision versions.
 
