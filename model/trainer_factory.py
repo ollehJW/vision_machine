@@ -93,8 +93,6 @@ class SupervisedTraining(object):
         start_train_time = time.time()
         self._model = model
         model_loaded_time = time.time()
-        logging_utils.info(f'{self.model.model_name} loaded in {model_loaded_time-start_train_time}\n')
-        logging_utils.info(f'{self.model.model_name} start training')
 
         # gpu setting
         if gpu:
